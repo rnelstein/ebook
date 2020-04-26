@@ -5,6 +5,7 @@ import {loadStripe} from '@stripe/stripe-js';
 import Success from "./Success";
 import Checkoutform from "./CheckoutForm";
 import Home from "./Home";
+import Complete from "./Complete";
 
 
 const stripePromise = loadStripe('pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV');
@@ -25,6 +26,10 @@ function App() {
 
                 <Route exact path="/success">
                     <Success />
+                </Route>
+
+                <Route exact path="/complete">
+                    <Complete />
                 </Route>
 
             </Switch>

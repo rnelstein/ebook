@@ -17,13 +17,21 @@ app.use(express.json());
 app.use(cors());
 
 
+app.get("/api/payment-intent", async (req, res) => {
+    const { paymentIntentId } = req.query;
+
+    // Display the resulting PaymentIntent in the complete.html view
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    res.send(paymentIntent);
+});
+
 app.post('/api/payment_intents', async (req, res) => {
 
     try {
         const {amount} = req.body;
 
 
-        const paymentIntent = await stripe.paymentIntents.create({
+        const intent = await stripe.paymentIntents.create({
             amount,
             currency: "eur",
             payment_method_types: ['ideal']
@@ -31,7 +39,7 @@ app.post('/api/payment_intents', async (req, res) => {
 
 
 
-        res.status(200).send(paymentIntent.client_secret);
+        res.status(200).send(intent.client_secret);
     } catch (err) {
         res.status(500).json({statusCode: 500, message: err.message});
     }

@@ -27,6 +27,21 @@ const CheckoutForm = () => {
 
         const idealBank = elements.getElement(IdealBankElement);
 
+        const payload = await stripe.createPaymentMethod({
+            type: 'ideal',
+            ideal: idealBank,
+            billing_details: {
+                name: 'hll',
+            },
+        });
+
+        if (payload.error) {
+            console.log('[error]', payload.error);
+
+        } else {
+            console.log('[PaymentMethod]', payload.paymentMethod);
+        }
+
 
         try {
             const {data: clientSecret} = await axios.post("http://localhost:5000/api/payment_intents", {
@@ -42,7 +57,7 @@ const CheckoutForm = () => {
                         email: 'kelly@user.com'
                     },
                 },
-                return_url: 'http://localhost:3000/success',
+                return_url: 'http://localhost:3000/complete',
             });
 
             if (error) console.log(error.message);
@@ -52,6 +67,7 @@ const CheckoutForm = () => {
         } catch (err) {
             console.log(err);
         }
+
     };
 
     return (
