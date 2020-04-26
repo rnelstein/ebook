@@ -1,6 +1,7 @@
 import React from 'react';
 import {useStripe, useElements, IdealBankElement} from '@stripe/react-stripe-js';
 import axios from 'axios'
+import {Link} from "react-router-dom";
 
 const IDEAL_ELEMENT_OPTIONS = {
     // Custom styling can be passed to options when creating an Element
@@ -63,7 +64,6 @@ const CheckoutForm = () => {
             if (error) console.log(error.message);
 
 
-
         } catch (err) {
             console.log(err);
         }
@@ -71,21 +71,51 @@ const CheckoutForm = () => {
     };
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col">
+        <div className="container pb-5 mb-sm-4">
+            <div className="row pt-4 mt-2">
+
+                <div className="col-md-8">
                     <form onSubmit={handleSubmit}>
-
-
-                        <div className="form-group">
-                            <label>iDEAL Bank</label>
-                            <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS}/>
-
+                        <div className="card mb-4">
+                            <h3 className="card-header">Betaal met ideal</h3>
+                            <div className="card-body">
+                                <div className="form-group">
+                                    <label>iDEAL Bank</label>
+                                    <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS}/>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" disabled={!stripe}>
-                            Pay
-                        </button>
+                        <div className="d-flex pt-2">
+                            <div className="w-50 pr-3">
+                                <Link className="btn btn-outline-secondary btn-block" to="/">
+                                    Back</Link>
+                            </div>
+                            <div className="w-50 pl-2">
+
+                                <button className="btn btn-primary btn-block text-white" type="submit"
+                                        disabled={!stripe}>
+                                    Bevestig
+                                </button>
+                            </div>
+                        </div>
                     </form>
+                </div>
+
+                <div className="col-md-4">
+                    <div className="card mb-4">
+                        <h3 className="card-header">Overzicht</h3>
+                        <div className="card-body">
+                            <div className="font-size-sm border-bottom pt-2 pb-3">
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span><span>$325.00</span>
+                                </div>
+
+                                <div className="d-flex justify-content-between"><span>Discount:</span><span>—</span>
+                                </div>
+                            </div>
+                            <div className="h3 font-weight-semibold text-center py-3">$358.75</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

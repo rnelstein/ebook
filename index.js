@@ -21,8 +21,13 @@ app.get("/api/payment-intent", async (req, res) => {
     const { paymentIntentId } = req.query;
 
     // Display the resulting PaymentIntent in the complete.html view
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    res.send(paymentIntent);
+    try {
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        res.status(200).send(paymentIntent);
+    } catch (err) {
+        console.log(err.message)
+        res.status(500).json({statusCode: 500, message: err.message});
+    }
 });
 
 app.post('/api/payment_intents', async (req, res) => {

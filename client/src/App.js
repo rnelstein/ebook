@@ -2,7 +2,6 @@ import React from 'react';
 import {BrowserRouter as Router, Switch, Route,} from "react-router-dom";
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
-import Success from "./Success";
 import Checkoutform from "./CheckoutForm";
 import Home from "./Home";
 import Complete from "./Complete";
@@ -22,10 +21,6 @@ function App() {
                     <Elements stripe={stripePromise}>
                     <Checkoutform />
                     </Elements>
-                </Route>
-
-                <Route exact path="/success">
-                    <Success />
                 </Route>
 
                 <Route exact path="/complete">
