@@ -18,7 +18,7 @@ app.use(cors());
 
 
 app.get("/api/payment-intent", async (req, res) => {
-    const { paymentIntentId } = req.query;
+    const {paymentIntentId} = req.query;
 
     // Display the resulting PaymentIntent in the complete.html view
     try {
@@ -43,12 +43,20 @@ app.post('/api/payment_intents', async (req, res) => {
         });
 
 
-
         res.status(200).send(intent.client_secret);
     } catch (err) {
         res.status(500).json({statusCode: 500, message: err.message});
     }
 });
 
-const port = 5000;
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+    const path = require('path');
+    app.get("*", async (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+}
+
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))

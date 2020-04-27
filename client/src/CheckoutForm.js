@@ -7,9 +7,9 @@ const IDEAL_ELEMENT_OPTIONS = {
     // Custom styling can be passed to options when creating an Element
     style: {
         base: {
-            padding: '10px 12px',
-            color: '#32325d',
-            fontSize: '16px',
+            //color: '#32325d',
+           fontSize: '16px',
+            letterSpacing: "0.025em",
             '::placeholder': {
                 color: '#aab7c4'
             },
@@ -45,7 +45,7 @@ const CheckoutForm = () => {
 
 
         try {
-            const {data: clientSecret} = await axios.post("http://localhost:5000/api/payment_intents", {
+            const {data: clientSecret} = await axios.post("/api/payment_intents", {
                 amount: 19.95 * 100
             });
 
@@ -81,7 +81,7 @@ const CheckoutForm = () => {
                             <div className="card-body">
                                 <div className="form-group">
                                     <label>iDEAL Bank</label>
-                                    <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS}/>
+                                    <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS} required/>
                                 </div>
                             </div>
                         </div>
@@ -107,13 +107,13 @@ const CheckoutForm = () => {
                         <div className="card-body">
                             <div className="font-size-sm border-bottom pt-2 pb-3">
                                 <div className="d-flex justify-content-between mb-2">
-                                    <span>Subtotal:</span><span>$325.00</span>
+                                    <span>Subtotaal:</span><span>€35,00</span>
                                 </div>
 
-                                <div className="d-flex justify-content-between"><span>Discount:</span><span>—</span>
+                                <div className="d-flex justify-content-between text-danger"><span>Korting: </span><span>15,05</span>
                                 </div>
                             </div>
-                            <div className="h3 font-weight-semibold text-center py-3">$358.75</div>
+                            <div className="h3 font-weight-semibold text-center py-3">€19,95</div>
                         </div>
                     </div>
                 </div>
