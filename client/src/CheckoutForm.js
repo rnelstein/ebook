@@ -8,7 +8,7 @@ const IDEAL_ELEMENT_OPTIONS = {
     style: {
         base: {
             //color: '#32325d',
-           fontSize: '16px',
+            fontSize: '16px',
             letterSpacing: "0.025em",
             '::placeholder': {
                 color: '#aab7c4'
@@ -20,6 +20,8 @@ const IDEAL_ELEMENT_OPTIONS = {
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+
+    const domain = process.env.NODE_ENV === 'production' ? window.location.hostname : 'http://localhost:3000/complete'
 
 
     const handleSubmit = async event => {
@@ -58,7 +60,7 @@ const CheckoutForm = () => {
                         email: 'kelly@user.com'
                     },
                 },
-                return_url: '/complete',
+                return_url: domain,
             });
 
             if (error) console.log(error.message);
@@ -81,7 +83,8 @@ const CheckoutForm = () => {
                             <div className="card-body">
                                 <div className="form-group">
                                     <label>iDEAL Bank</label>
-                                    <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS} required/>
+                                    <IdealBankElement className="form-control" options={IDEAL_ELEMENT_OPTIONS}
+                                                      required/>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +113,8 @@ const CheckoutForm = () => {
                                     <span>Subtotaal:</span><span>€35,00</span>
                                 </div>
 
-                                <div className="d-flex justify-content-between text-danger"><span>Korting: </span><span>15,05</span>
+                                <div className="d-flex justify-content-between text-danger">
+                                    <span>Korting: </span><span>15,05</span>
                                 </div>
                             </div>
                             <div className="h3 font-weight-semibold text-center py-3">€19,95</div>
