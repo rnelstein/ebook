@@ -1,13 +1,11 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route,} from "react-router-dom";
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
-import Checkoutform from "./CheckoutForm";
 import Home from "./Home";
 import Complete from "./Complete";
+import Canceled from "./Canceled";
+import NoMatch from "./NoMatch";
 
 
-const stripePromise = loadStripe('pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV');
 
 
 function App() {
@@ -17,14 +15,18 @@ function App() {
                 <Route exact path="/">
                     <Home />
                 </Route>
-                <Route path="/checkout">
-                    <Elements stripe={stripePromise}>
-                    <Checkoutform />
-                    </Elements>
-                </Route>
+
 
                 <Route exact path="/complete">
                     <Complete />
+                </Route>
+
+                <Route exact path="/canceled">
+                    <Canceled />
+                </Route>
+
+                <Route path="*">
+                    <NoMatch />
                 </Route>
 
             </Switch>

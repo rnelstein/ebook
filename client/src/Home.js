@@ -1,11 +1,54 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
 import Header from "./Header";
+import {loadStripe} from "@stripe/stripe-js";
+
+
+const fetchCheckoutSession = async ({quantity}) => {
+    return fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            quantity,
+        }),
+    }).then((res) => res.json());
+};
 
 function Home() {
+    const [stripe, setStripe] = useState(null)
+
+    useEffect(() => {
+        async function fetchConfig() {
+            // Fetch config from our backend.
+            setStripe(await loadStripe('pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV'))
+        }
+
+        fetchConfig();
+    }, []);
+
+    const handleClick = async (event) => {
+        // Call your backend to create the Checkout session.
+        // dispatch({ type: 'setLoading', payload: { loading: true } });
+        const {sessionId} = await fetchCheckoutSession({
+            quantity: 1,
+        });
+        // When the customer clicks on the button, redirect them to Checkout.
+        const {error} = await stripe.redirectToCheckout({
+            sessionId,
+        });
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `error.message`.
+        if (error) {
+            // dispatch({ type: 'setError', payload: { error } });
+            //  dispatch({ type: 'setLoading', payload: { loading: false } });
+        }
+    };
+
     return (
         <div className="App">
-           <Header/>
+            <Header/>
 
             <main className="bd-masthead" id="content">
 
@@ -24,8 +67,13 @@ function Home() {
                                 <p className="lead mb-4 text-white">Leer stap voor stap hoe u helemaal opnieuw kunt
                                     beginnen en een voltijds inkomen, of veel meer, kunt verdienen als Bol.com
                                     verkoper.</p>
-                                <Link to="/checkout" className="btn btn-lg btn-primary btn-dark mb-3">Koop Nu
-                                    voor <del>€35</del> €19,95</Link>
+                                <button
+                                    className="btn btn-lg btn-primary btn-dark mb-3"
+                                    role="link"
+                                    onClick={handleClick}>
+                                    Koop Nu voor <del>€35</del> €19,95
+                                </button>
+
                                 <span className="block text-white"><i
                                     className="fas fa-file-pdf">&nbsp;</i>PDF bestand</span>
                             </div>
@@ -49,8 +97,12 @@ function Home() {
                                     <li>Free Merchandise</li>
                                     <li>Free Shipping All Over The World</li>
                                 </ul>
-                                <a href="#" className="btn btn-lg btn-primary mb-3 text-white">Purchase Book
-                                    for <del>$90</del> $45</a>
+                                <button
+                                    className="btn btn-lg btn-primary mb-3 text-white"
+                                    role="link"
+                                    onClick={handleClick}>
+                                    Koop Nu voor <del>€35</del> €19,95
+                                </button>
                             </div>
                             <div className="col-md-6 mt-4">
                                 <figure className="text-center">
@@ -270,390 +322,23 @@ function Home() {
                             </div>
                         </div>
 
-                        <div className="row justify-align-center">
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <span className="free-badge">FREE</span>
-                                    <figure>
-                                        <img src="images/chapter-01.png" alt="chapter 01"/>
-                                    </figure>
-                                    <h4>Chapter 1</h4>
-                                    <p>Vivamus malesuada, urna vel volutpat dignissim, risus libero venenatis purus, nec
-                                        interdum nulla nunc ut lorem. Proin lorem dolor, congue ut pulvinar vel, tempus
-                                        eget
-                                        nisi. Morbi eget sollicitudin ligula.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <span className="free-badge">FREE</span>
-                                    <figure>
-                                        <img src="images/chapter-02.png" alt="chapter 02"/>
-                                    </figure>
-                                    <h4>Chapter 2</h4>
-                                    <p>Morbi eget sollicitudin ligula. Cras dictum nibh nulla, ac placerat erat pharetra
-                                        at.
-                                        Vivamus nulla dolor, posuere quis convallis sed, auctor eget nisl.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-03.png" alt="chapter 03"/>
-                                    </figure>
-                                    <h4>Chapter 3</h4>
-                                    <p>Fusce pretium augue non lacus cursus, at hendrerit ligula ultrices. Morbi at nunc
-                                        sit
-                                        amet est viverra lacinia at eget nunc. Sed scelerisque velit lectus, ut accumsan
-                                        lorem tincidunt et.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-04.png" alt="chapter 04"/>
-                                    </figure>
-                                    <h4>Chapter 4</h4>
-                                    <p>Donec eu metus eu enim aliquet auctor at non tellus. Suspendisse potenti. Fusce
-                                        bibendum massa ut sapien placerat eleifend. Aenean feugiat purus pharetra mi
-                                        finibus, ut elementum nisl cursus.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-05.png" alt="chapter 05"/>
-                                    </figure>
-                                    <h4>Chapter 5</h4>
-                                    <p>Nulla dignissim auctor risus, eu porta nulla eleifend eu. Pellentesque semper
-                                        imperdiet libero et consequat. Vestibulum odio nunc, blandit quis lacus vitae,
-                                        luctus tincidunt eros felis eget enim imperdiet.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-06.png" alt="chapter 06"/>
-                                    </figure>
-                                    <h4>Chapter 6</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet
-                                        scelerisque
-                                        mauris. Sed ipsum massa, sagittis id vestibulum sed, aliquam at ligula. Nulla ut
-                                        ipsum turpis.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-07.png" alt="chapter 07"/>
-                                    </figure>
-                                    <h4>Chapter 7</h4>
-                                    <p>Nulla dignissim auctor risus, eu porta nulla eleifend eu. Pellentesque semper
-                                        imperdiet libero et consequat. Vestibulum odio nunc, blandit quis lacus vitae,
-                                        luctus tincidunt eros felis eget enim imperdiet.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-08.png" alt="chapter 08"/>
-                                    </figure>
-                                    <h4>Chapter 8</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet
-                                        scelerisque
-                                        mauris. Sed ipsum massa, sagittis id vestibulum sed, aliquam at ligula. Nulla ut
-                                        ipsum turpis.</p>
-                                </div>
-                            </div>
-
-                            <div className="col-6 col-md-4 mb-4">
-                                <div className="book-chapter">
-                                    <figure>
-                                        <img src="images/chapter-09.png" alt="chapter 09"/>
-                                    </figure>
-                                    <h4>Chapter 9</h4>
-                                    <p>Donec eu metus eu enim aliquet auctor at non tellus. Suspendisse potenti. Fusce
-                                        bibendum massa ut sapien placerat eleifend. Aenean feugiat purus pharetra mi
-                                        finibus, ut elementum nisl cursus.</p>
-                                </div>
-                            </div>
-
-                        </div>
 
                         <div className="text-center mt-4 mb-4">
-                            <a href="#" className="btn btn-lg btn-primary text-white">Purchase Book
-                                for <del>$90</del> $45</a>
+
+                            <button
+                                className="btn btn-lg btn-primary text-white"
+                                role="link"
+                                onClick={handleClick}>
+                                Koop Nu voor <del>€35</del> €19,95
+                            </button>
+
                         </div>
+
 
                     </div>
                 </div>
 
 
-                <div className="package">
-                    <div className="container">
-
-                        <div className="row justify-content-md-center text-center">
-                            <div className="col-md-10">
-                                <h2 className="h-lg mb-4">Yes! I Want This Book...</h2>
-                                <p className="mb-4">Nulla dignissim auctor risus, eu porta nulla eleifend eu.
-                                    Pellentesque
-                                    semper imperdiet libero et consequat. Vestibulum odio nunc, blandit quis lacus
-                                    vitae.
-                                    Fusce sollicitudin sem a nunc dapibus, eu posuere odio finibus. Aenean sit amet
-                                    vulputate lectus, at scelerisque nunc. Quisque interdum, mi nec dignissim fermentum,
-                                    massa erat euismod eros.</p>
-                                <h4>Just for this month you can get price 50% off & free merchandise</h4>
-                                <p className="price-tag">
-                                    <del>$90</del>
-                                    $45
-                                </p>
-                                <h4 className="mb-5">Use this voucher code <mark
-                                    className="text-warning">MASTERFBADS</mark> in place order
-                                </h4>
-                            </div>
-                        </div>
-
-                        <div className="row align-items-center">
-                            <div className="col-md-3">
-                                <figure className="text-center">
-                                    <img src="images/tees.png" alt="Tees"/>
-                                </figure>
-                            </div>
-                            <div className="col-md-1">
-                                <figure className="text-center mb-4">
-                                    <img src="images/plus.png" alt="plus"/>
-                                </figure>
-                            </div>
-                            <div className="col-md-4">
-                                <figure className="text-center">
-                                    <img src="images/standing-book.png" alt="standing book"/>
-                                </figure>
-                            </div>
-                            <div className="col-md-1 mb-4">
-                                <figure className="text-center">
-                                    <img src="images/plus.png" alt="plus"/>
-                                </figure>
-                            </div>
-                            <div className="col-md-3">
-                                <figure className="text-center">
-                                    <img src="images/dvd.png" alt="DVD"/>
-                                </figure>
-                            </div>
-                        </div>
-                        <div className="text-center mt-3 mb-4">
-                            <a href="#" className="btn btn-lg btn-primary text-white">Purchase Book Now</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="faq">
-                    <div className="container">
-                        <h2 className="h-lg mb-5 text-center">You Can Ask Something<br/>Before You Buy</h2>
-                        <div className="row justify-content-md-center">
-                            <div className="col-md-10">
-                                <div className="row">
-
-                                    <div className="col-md-6 mb-4">
-                                        <div className="accordion" id="accordionFaq">
-                                            <div className="card">
-                                                <div className="card-header" id="headingOne">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link" type="button"
-                                                                data-toggle="collapse" data-target="#collapseOne"
-                                                                aria-expanded="true" aria-controls="collapseOne">
-                                                            Fusce sollicitudin sem a nunc dapibus ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-
-                                                <div id="collapseOne" className="collapse show"
-                                                     aria-labelledby="headingOne"
-                                                     data-parent="#accordionFaq">
-                                                    <div className="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                        accusamus
-                                                        terry richardson ad squid. 3 wolf moon officia aute, non
-                                                        cupidatat
-                                                        skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                        eiusmod.
-                                                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                        single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                                                        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                        sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                        Leggings
-                                                        occaecat craft beer farm-to-table, raw denim aesthetic synth
-                                                        nesciunt you probably haven't heard of them accusamus labore
-                                                        sustainable VHS.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card">
-                                                <div className="card-header" id="headingTwo">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button"
-                                                                data-toggle="collapse" data-target="#collapseTwo"
-                                                                aria-expanded="false" aria-controls="collapseTwo">
-                                                            Aenean sit amet vulputate lectus ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-                                                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo"
-                                                     data-parent="#accordionFaq">
-                                                    <div className="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                        accusamus
-                                                        terry richardson ad squid. 3 wolf moon officia aute, non
-                                                        cupidatat
-                                                        skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                        eiusmod.
-                                                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                        single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                                                        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                        sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                        Leggings
-                                                        occaecat craft beer farm-to-table, raw denim aesthetic synth
-                                                        nesciunt you probably haven't heard of them accusamus labore
-                                                        sustainable VHS.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card">
-                                                <div className="card-header" id="headingThree">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button"
-                                                                data-toggle="collapse" data-target="#collapseThree"
-                                                                aria-expanded="false" aria-controls="collapseThree">
-                                                            Blandit odio ipsum eget orci ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-                                                <div id="collapseThree" className="collapse"
-                                                     aria-labelledby="headingThree"
-                                                     data-parent="#accordionFaq">
-                                                    <div className="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                        accusamus
-                                                        terry richardson ad squid. 3 wolf moon officia aute, non
-                                                        cupidatat
-                                                        skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                        eiusmod.
-                                                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                        single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                                                        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                        sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                        Leggings
-                                                        occaecat craft beer farm-to-table, raw denim aesthetic synth
-                                                        nesciunt you probably haven't heard of them accusamus labore
-                                                        sustainable VHS.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="accordion" id="accordionFaqq">
-                                            <div className="card">
-                                                <div className="card-header" id="headingFour">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link" type="button"
-                                                                data-toggle="collapse" data-target="#collapseFour"
-                                                                aria-expanded="true" aria-controls="collapseFour">
-                                                            Etiam malesuado metus elementum ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-
-                                                <div id="collapseFour" className="collapse show"
-                                                     aria-labelledby="headingFour" data-parent="#accordionFaqq">
-                                                    <div className="card-body">
-                                                        Suspendisse eu velit tempus, pellentesque lectus finibus,
-                                                        tincidunt
-                                                        nibh. Suspendisse in metus gravida, pretium mauris tristique,
-                                                        placerat lorem. Nunc interdum diam a rutrum eleifend. Nam
-                                                        suscipit
-                                                        magna et tortor mollis ornare. Maecenas feugiat feugiat nisl at
-                                                        mollis. Duis aliquet molestie erat ac egestas. Curabitur laoreet
-                                                        posuere augue, at mattis libero interdum sed.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card">
-                                                <div className="card-header" id="headingFive">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button"
-                                                                data-toggle="collapse" data-target="#collapseFive"
-                                                                aria-expanded="false" aria-controls="collapseFive">
-                                                            Aenean sit amet vulputate lectus ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-                                                <div id="collapseFive" className="collapse"
-                                                     aria-labelledby="headingFive"
-                                                     data-parent="#accordionFaqq">
-                                                    <div className="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                        accusamus
-                                                        terry richardson ad squid. 3 wolf moon officia aute, non
-                                                        cupidatat
-                                                        skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                        eiusmod.
-                                                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                        single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                                                        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                        sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                        Leggings
-                                                        occaecat craft beer farm-to-table, raw denim aesthetic synth
-                                                        nesciunt you probably haven't heard of them accusamus labore
-                                                        sustainable VHS.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card">
-                                                <div className="card-header" id="headingSix">
-                                                    <h2 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button"
-                                                                data-toggle="collapse" data-target="#collapseSix"
-                                                                aria-expanded="false" aria-controls="collapseSix">
-                                                            Blandit odio ipsum eget orci ?
-                                                        </button>
-                                                    </h2>
-                                                </div>
-                                                <div id="collapseSix" className="collapse" aria-labelledby="headingSix"
-                                                     data-parent="#accordionFaqq">
-                                                    <div className="card-body">
-                                                        Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                        accusamus
-                                                        terry richardson ad squid. 3 wolf moon officia aute, non
-                                                        cupidatat
-                                                        skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                        eiusmod.
-                                                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                        single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                                                        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                        sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                        Leggings
-                                                        occaecat craft beer farm-to-table, raw denim aesthetic synth
-                                                        nesciunt you probably haven't heard of them accusamus labore
-                                                        sustainable VHS.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
 

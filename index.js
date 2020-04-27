@@ -17,36 +17,38 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get("/api/payment-intent", async (req, res) => {
-    const {paymentIntentId} = req.query;
-
-    // Display the resulting PaymentIntent in the complete.html view
-    try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        res.status(200).send(paymentIntent);
-    } catch (err) {
-        console.log(err.message)
-        res.status(500).json({statusCode: 500, message: err.message});
-    }
+// Fetch the Checkout Session to display the JSON result on the success page
+app.get('/api/checkout-session', async (req, res) => {
+    const {sessionId} = req.query;
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    res.send(session);
 });
 
-app.post('/api/payment_intents', async (req, res) => {
+app.post('/api/create-checkout-session', async (req, res) => {
+    const domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://young-dusk-69229.herokuapp.com';
 
-    try {
-        const {amount} = req.body;
+    const {quantity} = req.body;
 
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['ideal', 'card'],
+        locale: 'nl',
+        line_items: [
+            {
+                name: 'De Complete Bol Verkooppartner Gids 2020',
+                //images: ['https://picsum.photos/300/300?random=4'],
+                quantity: quantity,
+                currency: 'eur',
+                amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
+            },
+        ],
+        // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+        success_url: `${domainURL}/complete?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled`,
+    });
 
-        const intent = await stripe.paymentIntents.create({
-            amount,
-            currency: "eur",
-            payment_method_types: ['ideal']
-        });
-
-
-        res.status(200).send(intent.client_secret);
-    } catch (err) {
-        res.status(500).json({statusCode: 500, message: err.message});
-    }
+    res.send({
+        sessionId: session.id,
+    });
 });
 
 
@@ -59,4 +61,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
