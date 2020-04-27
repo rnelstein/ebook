@@ -233,30 +233,24 @@ const Complete = () => {
     useEffect(() => {
         if (!paymentIntentId) history.push('/');
 
-        if (paymentSuccess.status === 'succeeded') setStatus(true);
-        else setStatus(false)
 
+        axios.get("/api/payment-intent?paymentIntentId=" + paymentIntentId)
+            .then((response) => {
+                setIsLoaded(true);
+                if (response.data.status === 'succeeded') setStatus(true);
+                else setStatus(false)
 
-        /*
-                axios.get("/api/payment-intent?paymentIntentId=" + paymentIntentId)
-                    .then((response) => {
-                        setIsLoaded(true);
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                setError(error.response.data.message);
+            });
 
-
-                         if (response.data.status === 'succeeded') setStatus(true);
-        else setStatus(false)
-
-                    })
-                    .catch((error) => {
-                        setIsLoaded(true);
-                        setError(error.response.data.message);
-                    });
-         */
     }, []);
 
 
     if (error) return <div>Error: {error}</div>;
-    //else if (!isLoaded) return <div>Loading...</div>;
+    else if (!isLoaded) return <div>Loading...</div>;
     else
 
         return (
@@ -265,7 +259,7 @@ const Complete = () => {
 
                     {status &&
                     <div className="pt-5">
-                         <Confetti width={width} height={height} numberOfPieces={450}/>
+                        <Confetti width={width} height={height} numberOfPieces={450}/>
                         <div className="card py-3 mt-sm-3">
                             <div className="card-body text-center">
                                 <h3 className="h4 pb-3">Bedankt voor je bestelling!</h3>

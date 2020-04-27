@@ -58,7 +58,7 @@ const CheckoutForm = () => {
                         email: 'kelly@user.com'
                     },
                 },
-                return_url: 'http://localhost:3000/complete',
+                return_url: '/complete',
             });
 
             if (error) console.log(error.message);
