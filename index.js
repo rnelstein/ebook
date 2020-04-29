@@ -1,10 +1,11 @@
+require('dotenv').config();
+const fs = require("fs");
 const express = require('express');
 const morgan = require('morgan');
-const stripe = require('stripe')("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
-;
 const cors = require('cors');
-
 const bodyParser = require('body-parser');
+const sgMail = require('@sendgrid/mail').setApiKey(process.env.SENDGRID_API_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 //app
@@ -14,12 +15,10 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-
 app.use(express.json());
 app.use(cors());
 
 
-// Fetch the Checkout Session to display the JSON result on the success page
 app.get('/api/checkout-session', async (req, res) => {
     const {sessionId} = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -27,8 +26,7 @@ app.get('/api/checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-checkout-session', async (req, res) => {
-    const domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://bolmeesterbrein.nl';
-
+    let domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://bolmeesterbrein.nl';
     const {quantity} = req.body;
 
     const session = await stripe.checkout.sessions.create({
@@ -43,7 +41,6 @@ app.post('/api/create-checkout-session', async (req, res) => {
                 amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
             },
         ],
-        // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
         success_url: `${domainURL}/complete?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/canceled`,
     });
@@ -53,27 +50,45 @@ app.post('/api/create-checkout-session', async (req, res) => {
     });
 });
 
-
-// Stripe webhook, BEFORE body-parser, because stripe needs the body as stream
-app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
+app.post('/webhook', bodyParser.raw({type: 'application/json'}), async (req, res) => {
     const signature = req.headers['stripe-signature'];
+    const pathToAttachment = `${__dirname}/attachment.pdf`;
+    const attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
     let event;
     try {
         event = stripe.webhooks.constructEvent(
             req.body,
             signature,
-            'whsec_dbeEAUXEv2UplH0ByQYqJOMdE5gO9luq'
+            'whsec_4hA5RNlBJFz8YbOnIVPOJ7XkRgJYx10m'
         );
     } catch (err) {
         return res.status(400).send(`Webhook error: ${err.message}`);
     }
 
     if (event.type === 'checkout.session.completed') {
-       // const tour = session.client_reference_id;
-        //const user = (await User.findOne({email: session.customer_email})).id;
         console.log(event.data.object)
+    }
 
+    if (event.type === 'checkout.session.completed') {
+        // const tour = session.client_reference_id;
+        //const user = (await User.findOne({email: session.customer_email})).id;
+        console.log(event.data.object);
+        const msg = {
+            to: event.data.object.customer_email,
+            from: 'test@example.com',
+            subject: 'Sending with SendGrid is Fun',
+            text: 'and easy to do anywhere, even with Node.js',
+            attachments: [
+                {
+                    content: attachment,
+                    filename: "attachment.pdf",
+                    type: "application/pdf",
+                    disposition: "attachment"
+                }
+            ]
+        };
+        sgMail.send(msg).catch(err => console.log(err))
     }
 
     res.status(200).json({received: true});
