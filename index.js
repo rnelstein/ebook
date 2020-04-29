@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
-const Stripe = require('stripe');
+const stripe = require('stripe')("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
+;
 const cors = require('cors');
-const stripe = new Stripe("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
+
+const bodyParser = require('body-parser');
 
 
 //app
@@ -51,6 +53,30 @@ app.post('/api/create-checkout-session', async (req, res) => {
     });
 });
 
+
+// Stripe webhook, BEFORE body-parser, because stripe needs the body as stream
+app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
+    const signature = req.headers['stripe-signature'];
+
+    let event;
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            signature,
+            process.env.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (err) {
+        return res.status(400).send(`Webhook error: ${err.message}`);
+    }
+
+    if (event.type === 'checkout.session.completed') {
+       // const tour = session.client_reference_id;
+        //const user = (await User.findOne({email: session.customer_email})).id;
+
+    }
+
+    res.status(200).json({received: true});
+});
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
