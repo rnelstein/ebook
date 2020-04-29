@@ -27,7 +27,7 @@ app.get('/api/checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-checkout-session', async (req, res) => {
-    const domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://young-dusk-69229.herokuapp.com';
+    const domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://bolmeesterbrein.nl';
 
     const {quantity} = req.body;
 
@@ -37,7 +37,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         line_items: [
             {
                 name: 'De Complete Bol Verkooppartner Gids 2020',
-                //images: ['https://picsum.photos/300/300?random=4'],
+                images: ['https://bolmeesterbrein.nl/images/smartmockups_k9et078tbg.png'],
                 quantity: quantity,
                 currency: 'eur',
                 amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
@@ -63,7 +63,7 @@ app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
         event = stripe.webhooks.constructEvent(
             req.body,
             signature,
-            process.env.STRIPE_WEBHOOK_SECRET
+            'whsec_dbeEAUXEv2UplH0ByQYqJOMdE5gO9luq'
         );
     } catch (err) {
         return res.status(400).send(`Webhook error: ${err.message}`);
@@ -72,6 +72,7 @@ app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
     if (event.type === 'checkout.session.completed') {
        // const tour = session.client_reference_id;
         //const user = (await User.findOne({email: session.customer_email})).id;
+        console.log(event.data.object)
 
     }
 
