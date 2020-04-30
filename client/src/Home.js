@@ -21,8 +21,11 @@ function Home() {
     useEffect(() => {
         async function fetchConfig() {
             // Fetch config from our backend.
-            let key = process.env === 'production' ? 'pk_live_hYwxCXTB0oEWL68oRo2EW39B00gioDdTI9' : 'pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV'
-            setStripe(await loadStripe(key))
+            const {publicKey} = await fetch(
+                '/api/config'
+            ).then((res) => res.json());
+
+            setStripe(await loadStripe(publicKey))
         }
 
         fetchConfig();

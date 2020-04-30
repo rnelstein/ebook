@@ -4,10 +4,10 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const stripe = require("stripe")("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
+
 
 
 //app
@@ -29,6 +29,11 @@ app.use(express.json({
     },
 }));
 
+app.get('/api/config', (req, res) => {
+    res.send({
+        publicKey: process.env.STRIPE_PUBLISHABLE_KEY
+    });
+});
 
 app.get('/api/checkout-session', async (req, res) => {
     const {sessionId} = req.query;
@@ -75,7 +80,7 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
     let event;
     let signature = req.headers['stripe-signature'];
     try {
-        event = stripe.webhooks.constructEvent(req.rawBody, signature, endpointSecret)
+        event = stripe.webhooks.constructEvent(req.rawBody, signature, process.env.STRIPE_WEBHOOK_SECRET)
     } catch (err) {
         console.log(`❌ Error message: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
