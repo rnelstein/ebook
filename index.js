@@ -66,7 +66,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 });
 
-app.post('/webhook', bodyParser.raw({type: 'application/json'}), async (req, res) => {
+app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req, res) => {
 
     const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
     let pathToAttachment = `${__dirname}/attachment.pdf`;
