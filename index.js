@@ -4,9 +4,9 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const stripe = require("stripe")('sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC');
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 //app
