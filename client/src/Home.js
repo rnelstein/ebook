@@ -16,12 +16,12 @@ const fetchCheckoutSession = async ({quantity}) => {
 };
 
 function Home() {
-    const [stripe, setStripe] = useState(null)
+    const [stripe, setStripe] = useState(null);
 
     useEffect(() => {
         async function fetchConfig() {
             // Fetch config from our backend.
-            setStripe(await loadStripe('pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV'))
+            setStripe(await loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY|| 'pk_test_9op09jaOtWB0qeg7bC4EMb6X00hKevtPhV'))
         }
 
         fetchConfig();
@@ -89,7 +89,7 @@ function Home() {
                                 <p className="lead mb-4">Met de juiste kennis en middelen kunt je actie ondernemen om
                                     het online bedrijf te starten waar je van gedroomd hebt. Deze uitgebreide gids biedt
                                     tips en trucs om uw droom werkelijkheid te laten worden.
-<br/><br/>
+                                    <br/><br/>
                                     De eerste editie van De Complete Bol verkooppartner Gids 2020: leert u de basis en
                                     daarna. Het bereidt u voor op het onderzoeken naar de juiste producten, het
                                     onderhandelen met leveranciers voor de beste prijs en het promoten van de producten.
@@ -290,7 +290,8 @@ function Home() {
                                             <img src="images/book-free-chapter.png" alt="book free chapter"/>
                                         </figure>
                                         <div className="col-md-7 pl-md-4">
-                                            <h3 className="mb-4 text-white">Meld je aan voor de dagelijkse nieuwsbrief</h3>
+                                            <h3 className="mb-4 text-white">Meld je aan voor de dagelijkse
+                                                nieuwsbrief</h3>
                                             <form>
                                                 <div className="form-row">
                                                     <div className="form-group col-md-6">
@@ -302,7 +303,8 @@ function Home() {
                                                                placeholder="Your Email"/>
                                                     </div>
                                                 </div>
-                                                <a href="#" className="btn btn-lg btn-dark w-100 btn-primary mb-3">Meld mij aan</a>
+                                                <a href="#" className="btn btn-lg btn-dark w-100 btn-primary mb-3">Meld
+                                                    mij aan</a>
                                             </form>
                                         </div>
                                     </div>
