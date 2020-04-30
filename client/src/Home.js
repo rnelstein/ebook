@@ -4,7 +4,7 @@ import {loadStripe} from "@stripe/stripe-js";
 
 
 const fetchCheckoutSession = async ({quantity}) => {
-    return fetch('http://localhost:5000/api/create-checkout-session', {
+    return fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
