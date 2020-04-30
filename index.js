@@ -34,6 +34,7 @@ app.get('/api/checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-checkout-session', async (req, res) => {
+
     const domainURL = process.env.DOMAIN_URL;
     const {quantity} = req.body;
 
@@ -43,14 +44,14 @@ app.post('/api/create-checkout-session', async (req, res) => {
         line_items: [
             {
                 name: 'De Complete Bol Verkooppartner Gids 2020',
-                images: [`${domainURL}/images/smartmockups_k9et078tbg.png`],
+                images: [`${req.headers.origin}/images/smartmockups_k9et078tbg.png`],
                 quantity: quantity,
                 currency: 'eur',
                 amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
             },
         ],
-        success_url: `${domainURL}/complete?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled`,
+        success_url: `${req.headers.origin}/complete?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${req.headers.origin}/canceled`,
     });
 
     res.send({
