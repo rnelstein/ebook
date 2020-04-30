@@ -20,14 +20,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json({
-        // We need the raw body to verify webhook signatures.
-        // Let's compute it only when hitting the Stripe webhook endpoint.
-        verify: function (req, res, buf) {
-            if (req.originalUrl.startsWith('/api/webhook')) {
-                req.rawBody = buf.toString();
-            }
-        },
-    }));
+    // We need the raw body to verify webhook signatures.
+    // Let's compute it only when hitting the Stripe webhook endpoint.
+    verify: function (req, res, buf) {
+        if (req.originalUrl.startsWith('/api/webhook')) {
+            req.rawBody = buf.toString();
+        }
+    },
+}));
 
 
 app.get('/api/checkout-session', async (req, res) => {
@@ -42,7 +42,7 @@ app.get('/api/checkout-session', async (req, res) => {
 
 app.post('/api/create-checkout-session', async (req, res) => {
 
-    const domainURL = process.env.NODE_ENV === 'production'? 'http://bolmeesterbrein.nl': 'http://localhost:3000' ;
+    const domainURL = process.env.NODE_ENV === 'production' ? 'http://bolmeesterbrein.nl' : 'http://localhost:3000';
     const {quantity} = req.body;
     try {
         const session = await stripe.checkout.sessions.create({
@@ -62,7 +62,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         });
         res.send({sessionId: session.id});
     } catch (e) {
-         res.status(400).send(` error: ${e.message}`);
+        res.status(400).send(` error: ${e.message}`);
     }
 });
 
@@ -74,9 +74,8 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
 
     let event;
     let signature = req.headers['stripe-signature'];
-
     try {
-        event = stripe.webhooks.constructEvent(req.body, signature, endpointSecret)
+        event = stripe.webhooks.constructEvent(req.rawBody, signature, endpointSecret)
     } catch (err) {
         console.log(`❌ Error message: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
@@ -85,6 +84,7 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
 
     if (event.type === 'checkout.session.completed') {
         let customer = await stripe.customers.retrieve(event.data.object.customer);
+
         const msg = {
             to: customer.email,
             from: 'info@bolmeesterbrein.nl',
@@ -100,6 +100,7 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
                 },
             ],
         };
+
         try {
             await sgMail.send(msg);
         } catch (error) {
