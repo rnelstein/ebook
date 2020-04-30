@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const stripe = require("stripe")("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
 
 
 //app
@@ -67,7 +68,6 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
 app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req, res) => {
 
-    const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
     let pathToAttachment = `${__dirname}/attachment.pdf`;
     let attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
@@ -78,7 +78,8 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
     try {
         event = stripe.webhooks.constructEvent(req.body, signature, endpointSecret)
     } catch (err) {
-        console.log(`Webhook Error: ${err.message}`);
+        console.log(`❌ Error message: ${err.message}`);
+        res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
 
