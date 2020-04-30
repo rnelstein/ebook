@@ -4,8 +4,9 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const sgMail = require('@sendgrid/mail').setApiKey(process.env.SENDGRID_API_KEY);
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")('sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC');
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey('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');
 
 
 //app
@@ -15,7 +16,14 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-app.use(express.json());
+// Use JSON parser for all non-webhook routes
+app.use((req, res, next) => {
+    if (req.originalUrl === '/webhook') {
+        next();
+    } else {
+        bodyParser.json()(req, res, next);
+    }
+});
 app.use(cors());
 
 
@@ -26,7 +34,7 @@ app.get('/api/checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-checkout-session', async (req, res) => {
-    let domainURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://bolmeesterbrein.nl';
+    const domainURL = process.env.DOMAIN_URL;
     const {quantity} = req.body;
 
     const session = await stripe.checkout.sessions.create({
@@ -35,7 +43,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         line_items: [
             {
                 name: 'De Complete Bol Verkooppartner Gids 2020',
-                images: ['https://bolmeesterbrein.nl/images/smartmockups_k9et078tbg.png'],
+                images: [`${domainURL}/images/smartmockups_k9et078tbg.png`],
                 quantity: quantity,
                 currency: 'eur',
                 amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
@@ -51,44 +59,44 @@ app.post('/api/create-checkout-session', async (req, res) => {
 });
 
 app.post('/webhook', bodyParser.raw({type: 'application/json'}), async (req, res) => {
-    const signature = req.headers['stripe-signature'];
-    const pathToAttachment = `${__dirname}/attachment.pdf`;
-    const attachment = fs.readFileSync(pathToAttachment).toString("base64");
+
+    const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
+    let pathToAttachment = `${__dirname}/attachment.pdf`;
+    let attachment = fs.readFileSync(pathToAttachment).toString("base64");
+
 
     let event;
+    let signature = req.headers['stripe-signature'];
+
     try {
-        event = stripe.webhooks.constructEvent(
-            req.body,
-            signature,
-            'whsec_4hA5RNlBJFz8YbOnIVPOJ7XkRgJYx10m'
-        );
+        event = stripe.webhooks.constructEvent(req.body, signature, endpointSecret)
     } catch (err) {
-        return res.status(400).send(`Webhook error: ${err.message}`);
+        console.log(`Webhook Error: ${err.message}`);
     }
 
-    if (event.type === 'checkout.session.completed') {
-        console.log(event.data.object)
-    }
 
     if (event.type === 'checkout.session.completed') {
-        // const tour = session.client_reference_id;
-        //const user = (await User.findOne({email: session.customer_email})).id;
-        console.log(event.data.object);
+        let customer = await stripe.customers.retrieve(event.data.object.customer);
         const msg = {
-            to: event.data.object.customer_email,
-            from: 'test@example.com',
+            to: customer.email,
+            from: 'info@bolmeesterbrein.nl',
             subject: 'Sending with SendGrid is Fun',
             text: 'and easy to do anywhere, even with Node.js',
+            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
             attachments: [
                 {
                     content: attachment,
-                    filename: "attachment.pdf",
+                    filename: 'attachment.pdf',
                     type: "application/pdf",
-                    disposition: "attachment"
-                }
-            ]
+                    disposition: 'attachment'
+                },
+            ],
         };
-        sgMail.send(msg).catch(err => console.log(err))
+        try {
+            await sgMail.send(msg);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     res.status(200).json({received: true});

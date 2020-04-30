@@ -10,14 +10,11 @@ const Header = () => {
                         <a className="nav-link" href="#"><i className="fab fa-facebook-square text-white"/></a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#"><i className="fab fa-instagram text-white"/></a>
+                        <a className="nav-link" href="https://www.instagram.com/bol.meesterbrein/">
+                            <i className="fab fa-instagram text-white"/>
+                        </a>
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#"><i className="fab fa-twitter text-white"/></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#"><i className="fab fa-linkedin text-white"/></a>
-                    </li>
+
                     <li className="nav-item">
                         <a className="nav-link" href="#"><i className="fab fa-youtube text-white"/></a>
                     </li>
