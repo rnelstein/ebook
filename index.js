@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const sslRedirect = require('heroku-ssl-redirect');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -13,6 +14,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 //app
 const app = express();
 app.use(cors());
+// enable ssl redirect, default environment is production
+app.use(sslRedirect());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -47,7 +50,7 @@ app.get('/api/checkout-session', async (req, res) => {
 
 app.post('/api/create-checkout-session', async (req, res) => {
 
-    const domainURL = process.env.NODE_ENV === 'production' ? 'http://bolmeesterbrein.nl' : 'http://localhost:3000';
+    const domainURL = process.env.NODE_ENV === 'production' ? process.env.DOMAIN_URL : 'http://localhost:3000';
     const {quantity} = req.body;
     try {
         const session = await stripe.checkout.sessions.create({
