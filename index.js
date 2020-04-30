@@ -15,7 +15,6 @@ app.use(cors());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
-    console.log(process.env.DOMAIN_URL)
     app.use(morgan('dev'));
 }
 
@@ -23,7 +22,7 @@ app.use(express.json({
         // We need the raw body to verify webhook signatures.
         // Let's compute it only when hitting the Stripe webhook endpoint.
         verify: function (req, res, buf) {
-            if (req.originalUrl.startsWith('/webhook')) {
+            if (req.originalUrl.startsWith('/api/webhook')) {
                 req.rawBody = buf.toString();
             }
         },
