@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const stripe = require("stripe")("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
-const sgMail = require('@sendgrid/mail')
+const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
@@ -15,6 +15,7 @@ app.use(cors());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
+    console.log(process.env.DOMAIN_URL)
     app.use(morgan('dev'));
 }
 
@@ -61,7 +62,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         });
         res.send({sessionId: session.id});
     } catch (e) {
-        return res.status(400).send(` error: ${e.message}`);
+         res.status(400).send(` error: ${e.message}`);
     }
 });
 
