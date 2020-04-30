@@ -4,20 +4,21 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")("sk_test_ZSCLrGNRtbudQt1YkWvMMhJa00e9Sh52XC");
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 //app
 const app = express();
+app.use(cors());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-app.use(
-    express.json({
+
+app.use(express.json({
         // We need the raw body to verify webhook signatures.
         // Let's compute it only when hitting the Stripe webhook endpoint.
         verify: function (req, res, buf) {
@@ -25,9 +26,7 @@ app.use(
                 req.rawBody = buf.toString();
             }
         },
-    })
-);
-app.use(cors());
+    }));
 
 
 app.get('/api/checkout-session', async (req, res) => {
@@ -36,13 +35,13 @@ app.get('/api/checkout-session', async (req, res) => {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
         res.send(session);
     } catch (e) {
-
+        res.send(e.message);
     }
 });
 
 app.post('/api/create-checkout-session', async (req, res) => {
 
-    const domainURL = process.env.DOMAIN_URL;
+    const domainURL = process.env.NODE_ENV === 'production'? 'http://bolmeesterbrein.nl': 'http://localhost:3000' ;
     const {quantity} = req.body;
     try {
         const session = await stripe.checkout.sessions.create({
@@ -51,14 +50,14 @@ app.post('/api/create-checkout-session', async (req, res) => {
             line_items: [
                 {
                     name: 'De Complete Bol Verkooppartner Gids 2020',
-                    images: [`${req.headers.origin}/images/smartmockups_k9et078tbg.png`],
+                    images: [`${domainURL}/images/smartmockups_k9et078tbg.png`],
                     quantity: quantity,
                     currency: 'eur',
                     amount: 19.95 * 100, // Keep the amount on the server to prevent customers from manipulating on client
                 },
             ],
-            success_url: `${req.headers.origin}/complete?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin}/canceled`,
+            success_url: `${domainURL}/complete?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${domainURL}/canceled`,
         });
         res.send({sessionId: session.id});
     } catch (e) {
