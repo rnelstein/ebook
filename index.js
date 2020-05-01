@@ -98,6 +98,7 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
         const msg = {
             to: customer.email,
             from: 'info@bolmeesterbrein.nl',
+            name: 'Bol Meesterbrein',
             subject: 'Bedankt voor je bestelling',
             html: `
             <p>Bedankt voor je bestelling!</p>

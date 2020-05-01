@@ -184,68 +184,7 @@ function Home() {
                 </div>
 
 
-                <div className="reason">
-                    <div className="container">
-                        <h2 className="text-center mb-5">Waarom Bol Verkooppartner Gids</h2>
-                        <div className="row">
 
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-laugh"/></span>
-                                <h3>Targeted User</h3>
-                                <p className="mb-4">Donec gravida purus quis bibendum pharetra. Phasellus ultricies
-                                    tincidunt velit, eu rutrum ex vehicula in. Ut quis eleifend lectus. Duis suscipit
-                                    rhoncus interdum. Donec et erat magna. Nunc tempus lacinia libero vitae
-                                    consequat.</p>
-                            </div>
-
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-money-bill-wave"/></span>
-                                <h3>Cheapest Ads</h3>
-                                <p className="mb-4">Nulla dignissim scelerisque commodo. Proin dapibus varius mi, in
-                                    maximus
-                                    ligula consequat id. Aenean et elit dolor. Vivamus rutrum sit amet nunc elementum
-                                    efficitur. Fusce a aliquet nisi, eu sagittis nisi.</p>
-                            </div>
-
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-tachometer-alt"></i></span>
-                                <h3>Fast Results</h3>
-                                <p className="mb-4">Vivamus malesuada, urna vel volutpat dignissim, risus libero
-                                    venenatis
-                                    purus, nec interdum nulla nunc ut lorem. Proin lorem dolor, congue ut pulvinar vel,
-                                    tempus eget nisi. Morbi eget sollicitudin ligula. Cras dictum nibh nulla.</p>
-                            </div>
-
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-lightbulb"></i></span>
-                                <h3>Increase Brand Awareness</h3>
-                                <p className="mb-4">Donec gravida purus quis bibendum pharetra. Phasellus ultricies
-                                    tincidunt velit, eu rutrum ex vehicula in. Ut quis eleifend lectus. Duis suscipit
-                                    rhoncus interdum. Donec et erat magna. Nunc tempus lacinia libero vitae
-                                    consequat.</p>
-                            </div>
-
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-chart-line"></i></span>
-                                <h3>Increase Traffic Website</h3>
-                                <p className="mb-4">Nulla dignissim scelerisque commodo. Proin dapibus varius mi, in
-                                    maximus
-                                    ligula consequat id. Aenean et elit dolor. Vivamus rutrum sit amet nunc elementum
-                                    efficitur. Fusce a aliquet nisi, eu sagittis nisi.</p>
-                            </div>
-
-                            <div className="col-6 col-md-4">
-                                <span className="icon-lg"><i className="fas fa-pencil-ruler"></i></span>
-                                <h3>Measurable</h3>
-                                <p className="mb-4">Vivamus malesuada, urna vel volutpat dignissim, risus libero
-                                    venenatis
-                                    purus, nec interdum nulla nunc ut lorem. Proin lorem dolor, congue ut pulvinar vel,
-                                    tempus eget nisi. Morbi eget sollicitudin ligula. Cras dictum nibh nulla.</p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
 
                 <div className="chapters">
                     <div className="container">
