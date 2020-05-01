@@ -1,14 +1,15 @@
 require('dotenv').config();
 const fs = require("fs");
+const {promisify} = require('util');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sslRedirect = require('heroku-ssl-redirect');
+const jwt = require('jsonwebtoken');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 
 
 //app
@@ -92,21 +93,20 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
 
     if (event.type === 'checkout.session.completed') {
         let customer = await stripe.customers.retrieve(event.data.object.customer);
+        let token = jwt.sign({id: customer.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN});
 
         const msg = {
             to: customer.email,
             from: 'info@bolmeesterbrein.nl',
-            subject: 'Sending with SendGrid is Fun',
-            text: 'and easy to do anywhere, even with Node.js',
-            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-            attachments: [
-                {
-                    content: attachment,
-                    filename: 'attachment.pdf',
-                    type: "application/pdf",
-                    disposition: 'attachment'
-                },
-            ],
+            subject: 'Bedankt voor je bestelling',
+            html: `
+            <p>Bedankt voor je bestelling!</p>
+            <p>Gebruik de volgende link om je bestelling te downloaden:</p>
+            <p>${req.protocol}://${req.get('host')}/api/downloadlink/${token}</p>
+            <hr />
+            <p style="color:red"><b>Let op: je download link is 1 uur geldig!</b></p>
+            <p>https://bolmeesterbrein.nl</p>
+        `
         };
 
         try {
@@ -117,6 +117,20 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
     }
 
     res.status(200).json({received: true});
+});
+
+
+app.get('/api/downloadlink/:token', async (req, res) => {
+    try {
+        // 2) Verification token
+        const decoded = await promisify(jwt.verify)(req.params.token, process.env.JWT_SECRET);
+
+
+        let pathToAttachment = `${__dirname}/attachment.pdf`;
+        res.download(pathToAttachment);
+    } catch (e) {
+        res.send("Je downloadlink is helaas verlopen! Neem contact op met de administrator");
+    }
 });
 
 if (process.env.NODE_ENV === 'production') {

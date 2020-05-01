@@ -34,20 +34,9 @@ function Home() {
     const handleClick = async (event) => {
         // Call your backend to create the Checkout session.
         // dispatch({ type: 'setLoading', payload: { loading: true } });
-        const {sessionId} = await fetchCheckoutSession({
-            quantity: 1,
-        });
+        const {sessionId} = await fetchCheckoutSession({quantity: 1,});
         // When the customer clicks on the button, redirect them to Checkout.
-        const {error} = await stripe.redirectToCheckout({
-            sessionId,
-        });
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer
-        // using `error.message`.
-        if (error) {
-            // dispatch({ type: 'setError', payload: { error } });
-            //  dispatch({ type: 'setLoading', payload: { loading: false } });
-        }
+        await stripe.redirectToCheckout({sessionId});
     };
 
     return (
