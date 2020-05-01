@@ -33,11 +33,11 @@ const Complete = () => {
                     <div className="card py-3 mt-sm-3">
                         <div className="card-body text-center">
                             <h3 className="h4 pb-3">Bedankt voor je bestelling!</h3>
-                            <p className="mb-2">Uw bestelling is geplaatst en wordt zo snel mogelijk
+                            <p className="mb-2">Je bestelling is geplaatst en wordt zo snel mogelijk
                                 verwerkt.</p>
                             <p className="mb-2">Zorg ervoor dat u uw ordernummer noteert, dat
                                 is <strong>{session.id}.</strong></p>
-                            <p>U ontvangt binnenkort een e-mail met de bevestiging van uw bestelling. <u>U kunt
+                            <p>Je ontvangt binnenkort een e-mail met de bevestiging van je bestelling. <u>Je kan
                                 nu:</u>
                             </p>
                             <Link className="btn btn-secondary mt-3 mr-3" to="/">Terug naar homepagina</Link>
