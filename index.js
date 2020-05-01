@@ -105,7 +105,7 @@ app.post('/api/webhook', bodyParser.raw({type: 'application/json'}), async (req,
             <p>Gebruik de volgende link om je bestelling te downloaden:</p>
             <p>${req.protocol}://${req.get('host')}/api/downloadlink/${token}</p>
             <hr />
-            <p style="color:red"><b>Let op: je download link is 1 uur geldig!</b></p>
+            <p style="color:red"><b>Let op: je download link is 24 uur geldig!</b></p>
             <p>https://bolmeesterbrein.nl</p>
         `
         };
