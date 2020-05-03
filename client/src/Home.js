@@ -55,11 +55,13 @@ function Home() {
                             </div>
                             <div className="col-md-6 pl-md-5">
                                 <span className="stock-label">Bestseller</span>
-                                <h2 className="h-lg mb-3 text-white">Start vandaag
-                                    nog een geheel nieuwe carrière!</h2>
-                                <p className="lead mb-4 text-white">Leer stap voor stap hoe u helemaal opnieuw kunt
-                                    beginnen en een voltijds inkomen, of veel meer, kunt verdienen als Bol.com
-                                    verkoper.</p>
+                                <h2 className="h-lg mb-3 text-white">
+                                    Alles wat nodig is om uw ecommerce te laten groeien!
+                                </h2>
+                                <p className="lead mb-4 text-white">We zijn er om u te helpen uw e-commerce te laten
+                                    groeien en meer omzet te genereren. We hebben onze top tips samengesteld voor het
+                                    creëren van een duurzame online inkomstenstroom, het vinden van de beste producten
+                                    om te verkopen en diepgaande digitale marketing modellen.</p>
                                 <button
                                     className="btn btn-lg btn-primary btn-dark mb-3"
                                     role="link"
@@ -89,7 +91,7 @@ function Home() {
                                     De gids helpt je bij het navigeren door de belangrijkste aandachtspunten, valkuilen
                                     en risico's met betrekking tot het Bol partnerverkopen.</p>
                                 <ul className="checklist mb-4">
-                                    <li>30 pagina's verdeeld in 4 Hoofdstukken</li>
+                                    <li>28 pagina's verdeeld in 4 Hoofdstukken</li>
                                     <li>PDF Bestand Download</li>
                                 </ul>
                                 <button
@@ -182,8 +184,6 @@ function Home() {
                         <span className="sr-only">Next</span>
                     </a>
                 </div>
-
-
 
 
                 <div className="chapters">
