@@ -27,6 +27,7 @@
     "nodemon": "^2.0.3",
     "pdf-to-base64": "^1.0.2",
     "query-string": "^6.12.1",
+    "react-ga": "^2.7.0",
     "stripe": "^8.48.0"
   }
 }

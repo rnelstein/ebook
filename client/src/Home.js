@@ -56,7 +56,7 @@ function Home() {
                             <div className="col-md-6 pl-md-5">
                                 <span className="stock-label">Bestseller</span>
                                 <h2 className="h-lg mb-3 text-white">
-                                    Alles wat nodig is om uw ecommerce te laten groeien!
+                                    Alles wat nodig is om e-commerce te laten groeien!
                                 </h2>
                                 <p className="lead mb-4 text-white">We zijn er om u te helpen uw e-commerce te laten
                                     groeien en meer omzet te genereren. We hebben onze top tips samengesteld voor het
@@ -81,8 +81,8 @@ function Home() {
                         <div className="row align-item-center">
                             <div className="col-md-6 pr-md-5">
                                 <h2 className="h-lg mb-3">Start een winstgevende en duurzame onderneming</h2>
-                                <p className="lead mb-4">Met de juiste kennis en middelen kunt je actie ondernemen om
-                                    het online bedrijf te starten waar je van gedroomd hebt. Deze uitgebreide gids biedt
+                                <p className="lead mb-4">Met de juiste kennis en middelen kunt u actie ondernemen om
+                                    het online onderneming te starten waar je van gedroomd hebt. Deze uitgebreide gids biedt
                                     tips en trucs om uw droom werkelijkheid te laten worden.
                                     <br/><br/>
                                     De eerste editie van De Complete Bol verkooppartner Gids 2020: leert u de basis en
