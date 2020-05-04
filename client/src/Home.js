@@ -57,13 +57,12 @@ function Home() {
                                 <span className="stock-label">Bestseller</span>
                                 <h2 className="h-lg mb-3 text-white">Alles wat je nodig hebt, jouw product te verkopen
                                     op bol.com!</h2>
-                                <p className="lead mb-4 text-white">Wij zijn er om u te helpen je
+                                <p className="lead mb-4 text-white">Wij zijn er om je te helpen je
                                     <a className="text-white" href="https://www.bol.com/"> bol.com</a> verkopen te
-                                    laten groeien en meer omzet te genereren. Wij hebben onze e commerce ervaringen en
-                                    tips samengesteld voor het creëren van een inkomstenstroom op lange termijn, het
-                                    vinden
-                                    van de beste producten die je gaat verkopen en leggen heel erg de focus op de manier
-                                    van producten aanbieden via bol.</p>
+                                    en omzet te laten groeien, door onze ervaringen en tips over het
+                                    creëren van een inkomstenstroom op lange termijn,
+                                    vinden van de beste producten die je gaat verkopen en verschillende manieren
+                                    van producten aanbieden via bol te onthullen.</p>
                                 <button
                                     className="btn btn-lg btn-primary btn-dark mb-3"
                                     role="link"
@@ -88,7 +87,8 @@ function Home() {
                                     uitgebreide gids bied heel erg veel tips en trucs die je nodig hebt om je droom
                                     werkelijkheid te laten maken.
                                     <br/><br/>
-                                    In de eerste editie van De Complete Bol verkooppartner Gids 2020: leer je de basis als
+                                    In de eerste editie van De Complete Bol verkooppartner Gids 2020: leer je de basis
+                                    als
                                     <a href="https://www.bol.com/"> bol.com</a> verkoper. Het bereid je voor op het
                                     onderzoeken naar de jouw product, het
                                     onderhandelen met leveranciers die producten aanbieden en het promoten van de
