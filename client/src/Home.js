@@ -55,11 +55,15 @@ function Home() {
                             </div>
                             <div className="col-md-6 pl-md-5">
                                 <span className="stock-label">Bestseller</span>
-                                <h2 className="h-lg mb-3 text-white">Start vandaag
-                                    nog een geheel nieuwe carrière!</h2>
-                                <p className="lead mb-4 text-white">Leer stap voor stap hoe u helemaal opnieuw kunt
-                                    beginnen en een voltijds inkomen, of veel meer, kunt verdienen als Bol.com
-                                    verkoper.</p>
+                                <h2 className="h-lg mb-3 text-white">Alles wat je nodig hebt, jouw product te verkopen
+                                    op bol.com!</h2>
+                                <p className="lead mb-4 text-white">Wij zijn er om u te helpen je
+                                    <a className="text-white" href="https://www.bol.com/"> bol.com</a> verkopen te
+                                    laten groeien en meer omzet te genereren. Wij hebben onze e commerce ervaringen en
+                                    tips samengesteld voor het creëren van een inkomstenstroom op lange termijn, het
+                                    vinden
+                                    van de beste producten die je gaat verkopen en leggen heel erg de focus op de manier
+                                    van producten aanbieden via bol.</p>
                                 <button
                                     className="btn btn-lg btn-primary btn-dark mb-3"
                                     role="link"
@@ -78,16 +82,20 @@ function Home() {
                     <div className="container">
                         <div className="row align-item-center">
                             <div className="col-md-6 pr-md-5">
-                                <h2 className="h-lg mb-3">Start een winstgevende en duurzame onderneming</h2>
-                                <p className="lead mb-4">Met de juiste kennis en middelen kunt je actie ondernemen om
-                                    het online bedrijf te starten waar je van gedroomd hebt. Deze uitgebreide gids biedt
-                                    tips en trucs om uw droom werkelijkheid te laten worden.
+                                <h2 className="h-lg mb-3">Een winstgevende e-commerce op lange termijn</h2>
+                                <p className="lead mb-4">Met de juiste kennis en middelen kun je actie ondernemen jouw
+                                    lange termijn winstgevende e-commerce te starten waar je van gedroomd hebt. Deze
+                                    uitgebreide gids bied heel erg veel tips en trucs die je nodig hebt om je droom
+                                    werkelijkheid te laten maken.
                                     <br/><br/>
-                                    De eerste editie van De Complete Bol verkooppartner Gids 2020: leert u de basis en
-                                    daarna. Het bereidt u voor op het onderzoeken naar de juiste producten, het
-                                    onderhandelen met leveranciers voor de beste prijs en het promoten van de producten.
-                                    De gids helpt je bij het navigeren door de belangrijkste aandachtspunten, valkuilen
-                                    en risico's met betrekking tot het Bol partnerverkopen.</p>
+                                    In de eerste editie van De Complete Bol verkooppartner Gids 2020: leer je de basis als
+                                    <a href="https://www.bol.com/"> bol.com</a> verkoper. Het bereid je voor op het
+                                    onderzoeken naar de jouw product, het
+                                    onderhandelen met leveranciers die producten aanbieden en het promoten van de
+                                    producten die je gaat verkopen via <a href="https://www.bol.com/"> bol.com</a>.
+                                    Tenslotte helpt de gids je bij het
+                                    navigeren door de belangrijkste aandachtspunten, valkuilen en risico's als je
+                                    producten verkoopt.</p>
                                 <ul className="checklist mb-4">
                                     <li>30 pagina's verdeeld in 4 Hoofdstukken</li>
                                     <li>PDF Bestand Download</li>
@@ -184,8 +192,6 @@ function Home() {
                 </div>
 
 
-
-
                 <div className="chapters">
                     <div className="container">
 
@@ -194,7 +200,7 @@ function Home() {
                             <div className="col-md-6">
                                 <ul className="checklist">
                                     <li>Gebruik maken van het Bol-platform</li>
-                                    <li>Waar en hoe items te kopen</li>
+                                    <li>Hoe en waar producten aanbieden</li>
                                     <li>Perfecte advertenties maken</li>
                                     <li>Verkoop op juiste manier starten</li>
                                     <li>Fouten en valkuilen vermijden</li>
@@ -207,7 +213,7 @@ function Home() {
                                     <li>Verkoop tactieken</li>
                                     <li>Gebruik maken van niches</li>
                                     <li>Geen tijd te verspillen</li>
-                                    <li>hoog verkoopvolume ontwikkelen met weinig concurrentie</li>
+                                    <li>Winstgevende e-commerce lange termijn starten</li>
                                 </ul>
                             </div>
 
@@ -272,12 +278,12 @@ function Home() {
                                         <a className="nav-link" href="#"><i className="fab fa-facebook-square"/></a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="https://www.instagram.com/bol.meesterbrein/">
+                                        <a className="nav-link" href="https://www.instagram.com/bolmeesterbrein/">
                                             <i className="fab fa-instagram"/>
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#"><i className="fab fa-youtube"></i></a>
+                                        <a className="nav-link" href="#"><i className="fab fa-youtube"/></a>
                                     </li>
                                 </ul>
                                 <p className="copy">Copyrights &copy; 2020 NelsteinMedia.</p>
